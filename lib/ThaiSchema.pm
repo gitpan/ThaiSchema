@@ -2,7 +2,7 @@ package ThaiSchema;
 use strict;
 use warnings;
 use 5.010001;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 use parent qw/Exporter/;
 
 our $STRICT = 0;
@@ -268,11 +268,11 @@ Is it a hash contains valid keys?
 
 =item type_array()
 
-    type_hash(
-        {
+    type_array(
+        type_hash({
             x => type_str,
             y => type_int,
-        }
+        })
     );
 
 =item type_bool()

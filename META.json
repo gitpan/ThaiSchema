@@ -47,7 +47,7 @@
       },
       "ThaiSchema" : {
          "file" : "lib/ThaiSchema.pm",
-         "version" : "0.01"
+         "version" : "0.02"
       },
       "ThaiSchema::Array" : {
          "file" : "lib/ThaiSchema.pm",
@@ -84,5 +84,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.01"
+   "version" : "0.02"
 }

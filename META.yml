@@ -22,7 +22,7 @@ provides:
     version: 0
   ThaiSchema:
     file: lib/ThaiSchema.pm
-    version: 0.01
+    version: 0.02
   ThaiSchema::Array:
     file: lib/ThaiSchema.pm
     version: 0
@@ -53,4 +53,4 @@ requires:
   perl: 5.010001
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01
+version: 0.02

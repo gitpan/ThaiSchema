@@ -30,11 +30,11 @@ FUNCTIONS
         Is it a hash contains valid keys?
 
     type_array()
-            type_hash(
-                {
+            type_array(
+                type_hash({
                     x => type_str,
                     y => type_int,
-                }
+                })
             );
 
     type_bool()
