@@ -1,0 +1,56 @@
+---
+abstract: 'Lightweight schema validator'
+author:
+  - 'Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>'
+build_requires:
+  Test::Requires: 0
+configure_requires:
+  Module::Build: 0.38
+dynamic_config: 0
+generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: ThaiSchema
+no_index:
+  directory:
+    - inc
+provides:
+  Test::ThaiSchema:
+    file: lib/Test/ThaiSchema.pm
+    version: 0
+  ThaiSchema:
+    file: lib/ThaiSchema.pm
+    version: 0.01
+  ThaiSchema::Array:
+    file: lib/ThaiSchema.pm
+    version: 0
+  ThaiSchema::Bool:
+    file: lib/ThaiSchema.pm
+    version: 0
+  ThaiSchema::Hash:
+    file: lib/ThaiSchema.pm
+    version: 0
+  ThaiSchema::Int:
+    file: lib/ThaiSchema.pm
+    version: 0
+  ThaiSchema::Maybe:
+    file: lib/ThaiSchema.pm
+    version: 0
+  ThaiSchema::Number:
+    file: lib/ThaiSchema.pm
+    version: 0
+  ThaiSchema::Str:
+    file: lib/ThaiSchema.pm
+    version: 0
+requires:
+  Exporter: 0
+  JSON: 2
+  Scalar::Util: 0
+  Test::More: 0.98
+  parent: 0
+  perl: 5.010001
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.01
