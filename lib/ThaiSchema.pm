@@ -2,7 +2,7 @@ package ThaiSchema;
 use strict;
 use warnings;
 use 5.010001;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 use parent qw/Exporter/;
 
 our $STRICT = 0;
@@ -12,7 +12,7 @@ our $_NAME = '';
 
 our @EXPORT = qw/
     match_schema
-    type_int type_str type_number type_hash type_array type_maybe type_bool
+    type_int type_str type_number type_hash type_array type_maybe type_bool type_null
 /;
 
 use JSON;
@@ -31,7 +31,7 @@ sub match_schema {
 sub _match_schema {
     my ($value, $schema) = @_;
     if (ref $schema eq 'HASH') {
-        $schema = ThaiSchema::Hash->new($schema);
+        $schema = ThaiSchema::Hash->new(schema => $schema);
     }
     if (blessed $schema && $schema->can('match')) {
         if ($schema->match($value)) {
@@ -56,7 +56,7 @@ sub type_int() {
 }
 
 sub type_maybe($) {
-    ThaiSchema::Maybe->new(shift);
+    ThaiSchema::Maybe->new(schema => shift);
 }
 
 sub type_number() {
@@ -64,29 +64,50 @@ sub type_number() {
 }
 
 sub type_hash($) {
-    ThaiSchema::Hash->new(shift);
+    ThaiSchema::Hash->new(schema => shift);
 }
 
 sub type_array(;$) {
-    ThaiSchema::Array->new(shift);
+    ThaiSchema::Array->new(schema => shift);
 }
 
 sub type_bool() {
     ThaiSchema::Bool->new()
 }
 
+sub type_null() {
+    ThaiSchema::Null->new()
+}
+
+package ThaiSchema::Extra;
+# dummy object for extra key.
+use parent qw/ThaiSchema::Base/;
+
+sub is_array   { 1 }
+sub is_hash    { 1 }
+sub is_bool    { 1 }
+sub is_number  { 1 }
+sub is_integer { 1 }
+sub is_null    { 1 }
+sub is_string  { 1 }
+
+sub schema_for { undef }
+sub schema { ThaiSchema::Extra->new() }
+
 package ThaiSchema::Hash;
 
-sub new {
-    my $class = shift;
-    bless [$_[0]], $class;
+use parent qw/ThaiSchema::Base/;
+
+sub schema_for {
+    my ($self, $key) = @_;
+    return $self->{schema}->{$key};
 }
 
 sub match {
     my ($self, $value) = @_;
     return 0 unless ref $value eq 'HASH';
 
-    my $schema = $self->[0];
+    my $schema = $self->{schema};
 
     my $fail = 0;
     my %rest_keys = map { $_ => 1 } keys %$value;
@@ -108,117 +129,117 @@ sub error {
     return ();
 }
 
-package ThaiSchema::Array {
-    sub new {
-        my $class = shift;
-        bless [$_[0]], $class;
-    }
-    sub match {
-        my ($self, $value) = @_;
-        return 0 unless ref $value eq 'ARRAY';
-        if (defined $self->[0]) {
-            for (my $i=0; $i<@{$value}; $i++) {
-                local $_NAME = $_NAME . "[$i]";
-                my $elem = $value->[$i];
-                return 0 unless ThaiSchema::_match_schema($elem, $self->[0]);
-            }
+sub is_hash { 1 }
+
+package ThaiSchema::Array;
+use parent qw/ThaiSchema::Base/;
+
+sub is_array { 1 }
+
+sub schema { shift->{schema} }
+
+sub match {
+    my ($self, $value) = @_;
+    return 0 unless ref $value eq 'ARRAY';
+    my $schema = $self->{schema};
+    if (defined $schema) {
+        for (my $i=0; $i<@{$value}; $i++) {
+            local $_NAME = $_NAME . "[$i]";
+            my $elem = $value->[$i];
+            return 0 unless ThaiSchema::_match_schema($elem, $schema);
         }
+    }
+    return 1;
+}
+
+sub error {
+    return ();
+}
+
+package ThaiSchema::Maybe;
+use parent qw/ThaiSchema::Base/;
+
+sub match {
+    my ($self, $value) = @_;
+    return 1 unless defined $value;
+    return $self->{schema}->match($value);
+}
+sub error { "is not maybe $_[0]->{schema}" }
+
+package ThaiSchema::Str;
+use parent qw/ThaiSchema::Base/;
+
+sub match {
+    my ($self, $value) = @_;
+    return 0 unless defined $value;
+    if ($ThaiSchema::STRICT) {
+        my $b_obj = B::svref_2object(\$value);
+        my $flags = $b_obj->FLAGS;
+        return 0 if $flags & ( B::SVp_IOK | B::SVp_NOK ) and !( $flags & B::SVp_POK ); # SvTYPE is IV or NV?
         return 1;
-    }
-    sub error {
-        return ();
+    } else {
+        return not ref $value;
     }
 }
+sub error { "is not str" }
+sub is_string { 1 }
 
-package ThaiSchema::Maybe {
-    sub new {
-        my $class = shift;
-        bless [$_[0]], $class;
-    }
-    sub match {
-        my ($self, $value) = @_;
-        return 1 unless defined $value;
-        return $self->[0]->match($value);
-    }
-    sub error { "is not maybe $_[0]->[0]" }
-}
-
-package ThaiSchema::Str {
-    sub new {
-        my $class = shift;
-        bless {}, $class;
-    }
-    sub match {
-        my ($self, $value) = @_;
-        return 0 unless defined $value;
-        if ($ThaiSchema::STRICT) {
-            my $b_obj = B::svref_2object(\$value);
-            my $flags = $b_obj->FLAGS;
-            return 0 if $flags & ( B::SVp_IOK | B::SVp_NOK ) and !( $flags & B::SVp_POK ); # SvTYPE is IV or NV?
-            return 1;
-        } else {
-            return not ref $value;
-        }
-    }
-    sub error { "is not str" }
-}
-
-package ThaiSchema::Int {
-    sub new {
-        my $class = shift;
-        bless {}, $class;
-    }
-    sub match {
-        my ($self, $value) = @_;
-        return 0 unless defined $value;
-        if ($ThaiSchema::STRICT) {
-            my $b_obj = B::svref_2object(\$value);
-            my $flags = $b_obj->FLAGS;
-            return 1 if $flags & ( B::SVp_IOK | B::SVp_NOK ) and int($value) == $value and !( $flags & B::SVp_POK ); # SvTYPE is IV or NV?
-            return 0;
-        } else {
-            return $value =~ /^[1-9][0-9]*$/;
-        }
-    }
-    sub error { "is not int" }
-}
-
-package ThaiSchema::Number {
-    use Scalar::Util ();
-    sub new {
-        my $class = shift;
-        bless {}, $class;
-    }
-    sub match {
-        my ($self, $value) = @_;
-        return 0 unless defined $value;
-        if ($ThaiSchema::STRICT) {
-            my $b_obj = B::svref_2object(\$value);
-            my $flags = $b_obj->FLAGS;
-            return 1 if $flags & ( B::SVp_IOK | B::SVp_NOK ) and !( $flags & B::SVp_POK ); # SvTYPE is IV or NV?
-            return 0;
-        } else {
-            return Scalar::Util::looks_like_number($value);
-        }
-    }
-    sub error { 'is not number' }
-}
-
-package ThaiSchema::Bool {
-    use JSON;
-    sub new {
-        my $class = shift;
-        bless {}, $class;
-    }
-    sub match {
-        my ($self, $value) = @_;
-        return 0 unless defined $value;
-        return 1 if JSON::is_bool($value);
-        return 1 if ref($value) eq 'SCALAR' && ($$value eq 1 || $$value eq 0);
+package ThaiSchema::Int;
+use parent qw/ThaiSchema::Base/;
+sub match {
+    my ($self, $value) = @_;
+    return 0 unless defined $value;
+    if ($ThaiSchema::STRICT) {
+        my $b_obj = B::svref_2object(\$value);
+        my $flags = $b_obj->FLAGS;
+        return 1 if $flags & ( B::SVp_IOK | B::SVp_NOK ) and int($value) == $value and !( $flags & B::SVp_POK ); # SvTYPE is IV or NV?
         return 0;
+    } else {
+        return $value =~ /^[1-9][0-9]*$/;
     }
-    sub error { 'is not bool' }
 }
+sub error { "is not int" }
+sub is_number { 1 }
+sub is_integer { 1 }
+
+package ThaiSchema::Number;
+use parent qw/ThaiSchema::Base/;
+use Scalar::Util ();
+sub is_number { 1 }
+sub match {
+    my ($self, $value) = @_;
+    return 0 unless defined $value;
+    if ($ThaiSchema::STRICT) {
+        my $b_obj = B::svref_2object(\$value);
+        my $flags = $b_obj->FLAGS;
+        return 1 if $flags & ( B::SVp_IOK | B::SVp_NOK ) and !( $flags & B::SVp_POK ); # SvTYPE is IV or NV?
+        return 0;
+    } else {
+        return Scalar::Util::looks_like_number($value);
+    }
+}
+sub error { 'is not number' }
+
+package ThaiSchema::Bool;
+use parent qw/ThaiSchema::Base/;
+sub is_bool { 1 }
+use JSON;
+sub match {
+    my ($self, $value) = @_;
+    return 0 unless defined $value;
+    return 1 if JSON::is_bool($value);
+    return 1 if ref($value) eq 'SCALAR' && ($$value eq 1 || $$value eq 0);
+    return 0;
+}
+sub error { 'is not bool' }
+
+package ThaiSchema::Null;
+use parent qw/ThaiSchema::Base/;
+sub is_null { 1 }
+sub match {
+    die "Not implemented.";
+}
+sub error { 'is not null' }
 
 1;
 __END__

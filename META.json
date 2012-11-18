@@ -21,6 +21,7 @@
    "prereqs" : {
       "build" : {
          "requires" : {
+            "Test::More" : "0.98",
             "Test::Requires" : "0"
          }
       },
@@ -31,6 +32,7 @@
       },
       "runtime" : {
          "requires" : {
+            "Class::Accessor::Lite" : "0",
             "Exporter" : "0",
             "JSON" : "2",
             "Scalar::Util" : "0",
@@ -47,13 +49,21 @@
       },
       "ThaiSchema" : {
          "file" : "lib/ThaiSchema.pm",
-         "version" : "0.03"
+         "version" : "0.04"
       },
       "ThaiSchema::Array" : {
          "file" : "lib/ThaiSchema.pm",
          "version" : 0
       },
+      "ThaiSchema::Base" : {
+         "file" : "lib/ThaiSchema/Base.pm",
+         "version" : 0
+      },
       "ThaiSchema::Bool" : {
+         "file" : "lib/ThaiSchema.pm",
+         "version" : 0
+      },
+      "ThaiSchema::Extra" : {
          "file" : "lib/ThaiSchema.pm",
          "version" : 0
       },
@@ -65,7 +75,15 @@
          "file" : "lib/ThaiSchema.pm",
          "version" : 0
       },
+      "ThaiSchema::JSON" : {
+         "file" : "lib/ThaiSchema/JSON.pm",
+         "version" : 0
+      },
       "ThaiSchema::Maybe" : {
+         "file" : "lib/ThaiSchema.pm",
+         "version" : 0
+      },
+      "ThaiSchema::Null" : {
          "file" : "lib/ThaiSchema.pm",
          "version" : 0
       },
@@ -84,5 +102,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.03"
+   "version" : "0.04"
 }

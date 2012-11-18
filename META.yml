@@ -3,6 +3,7 @@ abstract: 'Lightweight schema validator'
 author:
   - 'Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>'
 build_requires:
+  Test::More: 0.98
   Test::Requires: 0
 configure_requires:
   Module::Build: 0.38
@@ -22,11 +23,17 @@ provides:
     version: 0
   ThaiSchema:
     file: lib/ThaiSchema.pm
-    version: 0.03
+    version: 0.04
   ThaiSchema::Array:
     file: lib/ThaiSchema.pm
     version: 0
+  ThaiSchema::Base:
+    file: lib/ThaiSchema/Base.pm
+    version: 0
   ThaiSchema::Bool:
+    file: lib/ThaiSchema.pm
+    version: 0
+  ThaiSchema::Extra:
     file: lib/ThaiSchema.pm
     version: 0
   ThaiSchema::Hash:
@@ -35,7 +42,13 @@ provides:
   ThaiSchema::Int:
     file: lib/ThaiSchema.pm
     version: 0
+  ThaiSchema::JSON:
+    file: lib/ThaiSchema/JSON.pm
+    version: 0
   ThaiSchema::Maybe:
+    file: lib/ThaiSchema.pm
+    version: 0
+  ThaiSchema::Null:
     file: lib/ThaiSchema.pm
     version: 0
   ThaiSchema::Number:
@@ -45,6 +58,7 @@ provides:
     file: lib/ThaiSchema.pm
     version: 0
 requires:
+  Class::Accessor::Lite: 0
   Exporter: 0
   JSON: 2
   Scalar::Util: 0
@@ -53,4 +67,4 @@ requires:
   perl: 5.010001
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.03
+version: 0.04
