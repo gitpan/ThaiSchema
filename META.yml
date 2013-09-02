@@ -1,14 +1,15 @@
 ---
 abstract: 'Lightweight schema validator'
 author:
-  - 'Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>'
+  - 'Tokuhiro Matsuno <tokuhirom@gmail.com>'
 build_requires:
   Test::More: 0.98
-  Test::Requires: 0
 configure_requires:
+  CPAN::Meta: 0
+  CPAN::Meta::Prereqs: 0
   Module::Build: 0.38
 dynamic_config: 0
-generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Minilla/v0.6.3, CPAN::Meta::Converter version 2.131560'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -16,55 +17,52 @@ meta-spec:
 name: ThaiSchema
 no_index:
   directory:
+    - t
+    - xt
     - inc
+    - share
+    - eg
+    - examples
+    - author
 provides:
   Test::ThaiSchema:
     file: lib/Test/ThaiSchema.pm
-    version: 0
   ThaiSchema:
     file: lib/ThaiSchema.pm
-    version: 0.08
+    version: 0.09
   ThaiSchema::Array:
     file: lib/ThaiSchema.pm
-    version: 0
   ThaiSchema::Base:
     file: lib/ThaiSchema/Base.pm
-    version: 0
   ThaiSchema::Bool:
     file: lib/ThaiSchema.pm
-    version: 0
   ThaiSchema::Extra:
     file: lib/ThaiSchema.pm
-    version: 0
   ThaiSchema::Hash:
     file: lib/ThaiSchema.pm
-    version: 0
   ThaiSchema::Int:
     file: lib/ThaiSchema.pm
-    version: 0
   ThaiSchema::JSON:
     file: lib/ThaiSchema/JSON.pm
-    version: 0
   ThaiSchema::Maybe:
     file: lib/ThaiSchema.pm
-    version: 0
   ThaiSchema::Null:
     file: lib/ThaiSchema.pm
-    version: 0
   ThaiSchema::Number:
     file: lib/ThaiSchema.pm
-    version: 0
   ThaiSchema::Str:
     file: lib/ThaiSchema.pm
-    version: 0
 requires:
-  Class::Accessor::Lite: 0
+  Encode: 0
   Exporter: 0
   JSON: 2
   Scalar::Util: 0
+  Test::Builder::Module: 0
   Test::More: 0.98
   parent: 0
   perl: 5.010001
 resources:
-  license: http://dev.perl.org/licenses/
-version: 0.08
+  bugtracker: https://github.com/tokuhirom/ThaiSchema/issues
+  homepage: https://github.com/tokuhirom/ThaiSchema
+  repository: git://github.com/tokuhirom/ThaiSchema.git
+version: 0.09

@@ -1,13 +1,11 @@
 {
    "abstract" : "Lightweight schema validator",
    "author" : [
-      "Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>"
+      "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921",
-   "license" : [
-      "perl_5"
-   ],
+   "generated_by" : "Minilla/v0.6.3",
+   "license" : "perl_5",
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
@@ -15,92 +13,101 @@
    "name" : "ThaiSchema",
    "no_index" : {
       "directory" : [
-         "inc"
+         "t",
+         "xt",
+         "inc",
+         "share",
+         "eg",
+         "examples",
+         "author"
       ]
    },
    "prereqs" : {
-      "build" : {
-         "requires" : {
-            "Test::More" : "0.98",
-            "Test::Requires" : "0"
-         }
-      },
       "configure" : {
          "requires" : {
+            "CPAN::Meta" : "0",
+            "CPAN::Meta::Prereqs" : "0",
             "Module::Build" : "0.38"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::CPAN::Meta" : "0",
+            "Test::MinimumVersion" : "0.10108",
+            "Test::Pod" : "1.41",
+            "Test::Spellunker" : "v0.2.7"
          }
       },
       "runtime" : {
          "requires" : {
-            "Class::Accessor::Lite" : "0",
+            "Encode" : "0",
             "Exporter" : "0",
             "JSON" : "2",
             "Scalar::Util" : "0",
+            "Test::Builder::Module" : "0",
             "Test::More" : "0.98",
             "parent" : "0",
             "perl" : "5.010001"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0.98"
          }
       }
    },
    "provides" : {
       "Test::ThaiSchema" : {
-         "file" : "lib/Test/ThaiSchema.pm",
-         "version" : 0
+         "file" : "lib/Test/ThaiSchema.pm"
       },
       "ThaiSchema" : {
          "file" : "lib/ThaiSchema.pm",
-         "version" : "0.08"
+         "version" : "0.09"
       },
       "ThaiSchema::Array" : {
-         "file" : "lib/ThaiSchema.pm",
-         "version" : 0
+         "file" : "lib/ThaiSchema.pm"
       },
       "ThaiSchema::Base" : {
-         "file" : "lib/ThaiSchema/Base.pm",
-         "version" : 0
+         "file" : "lib/ThaiSchema/Base.pm"
       },
       "ThaiSchema::Bool" : {
-         "file" : "lib/ThaiSchema.pm",
-         "version" : 0
+         "file" : "lib/ThaiSchema.pm"
       },
       "ThaiSchema::Extra" : {
-         "file" : "lib/ThaiSchema.pm",
-         "version" : 0
+         "file" : "lib/ThaiSchema.pm"
       },
       "ThaiSchema::Hash" : {
-         "file" : "lib/ThaiSchema.pm",
-         "version" : 0
+         "file" : "lib/ThaiSchema.pm"
       },
       "ThaiSchema::Int" : {
-         "file" : "lib/ThaiSchema.pm",
-         "version" : 0
+         "file" : "lib/ThaiSchema.pm"
       },
       "ThaiSchema::JSON" : {
-         "file" : "lib/ThaiSchema/JSON.pm",
-         "version" : 0
+         "file" : "lib/ThaiSchema/JSON.pm"
       },
       "ThaiSchema::Maybe" : {
-         "file" : "lib/ThaiSchema.pm",
-         "version" : 0
+         "file" : "lib/ThaiSchema.pm"
       },
       "ThaiSchema::Null" : {
-         "file" : "lib/ThaiSchema.pm",
-         "version" : 0
+         "file" : "lib/ThaiSchema.pm"
       },
       "ThaiSchema::Number" : {
-         "file" : "lib/ThaiSchema.pm",
-         "version" : 0
+         "file" : "lib/ThaiSchema.pm"
       },
       "ThaiSchema::Str" : {
-         "file" : "lib/ThaiSchema.pm",
-         "version" : 0
+         "file" : "lib/ThaiSchema.pm"
       }
    },
    "release_status" : "stable",
    "resources" : {
-      "license" : [
-         "http://dev.perl.org/licenses/"
-      ]
+      "bugtracker" : {
+         "web" : "https://github.com/tokuhirom/ThaiSchema/issues"
+      },
+      "homepage" : "https://github.com/tokuhirom/ThaiSchema",
+      "repository" : {
+         "url" : "git://github.com/tokuhirom/ThaiSchema.git",
+         "web" : "https://github.com/tokuhirom/ThaiSchema"
+      }
    },
-   "version" : "0.08"
+   "version" : "0.09"
 }

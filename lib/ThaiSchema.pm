@@ -2,7 +2,7 @@ package ThaiSchema;
 use strict;
 use warnings;
 use 5.010001;
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 use parent qw/Exporter/;
 
 our $STRICT = 0;
@@ -205,7 +205,7 @@ sub match {
         return 1 if $flags & ( B::SVp_IOK | B::SVp_NOK ) and int($value) == $value and !( $flags & B::SVp_POK ); # SvTYPE is IV or NV?
         return 0;
     } else {
-        return $value =~ /^[1-9][0-9]*$/;
+        return $value =~ /\A(?:[1-9][0-9]*|0)\z/;
     }
 }
 sub error { "is not int" }
@@ -274,19 +274,19 @@ ThaiSchema is a lightweight schema validator.
 
 =over 4
 
-=item type_int()
+=item C<< type_int() >>
 
 Is it a int value?
 
-=item type_str()
+=item C<< type_str() >>
 
 Is it a str value?
 
-=item type_maybe($child)
+=item C<< type_maybe($child) >>
 
 Is it maybe a $child value?
 
-=item type_hash(\%scheama)
+=item C<< type_hash(\%schema) >>
 
     type_hash(
         {
@@ -297,7 +297,7 @@ Is it maybe a $child value?
 
 Is it a hash contains valid keys?
 
-=item type_array()
+=item C<< type_array() >>
 
     type_array(
         type_hash({
@@ -306,11 +306,11 @@ Is it a hash contains valid keys?
         })
     );
 
-=item type_bool()
+=item C<< type_bool() >>
 
 Is it a boolean value?
 
-This function allows only JSON::true, JSON::false, \1, and \0.
+This function allows only JSON::true, JSON::false, C<\1>, and C<\0>.
 
 =back
 
@@ -332,7 +332,7 @@ You can allow extra key in hashref.
 
 =head1 AUTHOR
 
-Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>
+Tokuhiro Matsuno E<lt>tokuhirom@gmail.comE<gt>
 
 =head1 SEE ALSO
 
